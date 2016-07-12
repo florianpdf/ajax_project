@@ -5,7 +5,7 @@
         <div class="nav-wrapper">
             <a href="#" class="brand-logo">W.C.S</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li>Nouvelles news: {{ nb_news }}</li>
+                <li style="margin-right: 20px">Nouvelles news: {{ nb_news }}</li>
             </ul>
         </div>
     </nav>
@@ -23,20 +23,7 @@
                     </thead>
                     <tbody>
                     {% for news in all_news %}
-                        <tr>
-                            <td>{{ news.title }}</td>
-                            <td>{{ news.content }}</td>
-                            <td>
-                                <ul>
-                                    <li>
-                                        <a href="{{ path('news_delete', { 'id': news.id }) }}">delete</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ path('news_edit', { 'id': news.id }) }}">edit</a>
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
+                        {% include('AjaxBundle:news:show_news.html.twig') %}
                     {% endfor %}
                     </tbody>
                 </table>
@@ -59,4 +46,29 @@
     </div>
 
 
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+
+    <script>
+        $('form').on('submit', function() {
+            var $this = $(this);
+            var data = new FormData(this);
+            $.ajax({
+                type: 'POST',
+                url: $this.attr('action'),
+                data: data,
+                processData: false,
+                contentType: false,
+                success: function(data){
+
+                },
+                error: function(error){
+
+                }
+            })
+        });
+    </script>
 {% endblock %}
