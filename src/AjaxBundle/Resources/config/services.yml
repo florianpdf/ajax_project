@@ -1,0 +1,4 @@
+services:
+#    ajax.example:
+#        class: AjaxBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]

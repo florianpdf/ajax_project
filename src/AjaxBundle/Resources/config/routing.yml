@@ -1,0 +1,14 @@
+ajax_homepage:
+    path:     /
+    defaults: { _controller: "AjaxBundle:News:new" }
+
+news_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AjaxBundle:News:edit" }
+    methods:  [GET, POST]
+
+news_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AjaxBundle:News:delete" }
+    requirements:
+        id:  \d+

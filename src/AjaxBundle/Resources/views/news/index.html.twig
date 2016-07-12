@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo">W.C.S</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li>Nouvelles news: {{ nb_news }}</li>
+            </ul>
+        </div>
+    </nav>
+    <h1>Liste des News</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col m10 offset-m1">
+                <table class="centered">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Content</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for news in all_news %}
+                        <tr>
+                            <td>{{ news.title }}</td>
+                            <td>{{ news.content }}</td>
+                            <td>
+                                <ul>
+                                    <li>
+                                        <a href="{{ path('news_delete', { 'id': news.id }) }}">delete</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('news_edit', { 'id': news.id }) }}">edit</a>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+    <h1>News creation</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col m6 offset-m3">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <input type="submit" value="Create" />
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
