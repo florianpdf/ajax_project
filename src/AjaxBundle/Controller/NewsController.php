@@ -46,6 +46,17 @@ class NewsController extends Controller
                 ));
             }
         }
+        
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $em->persist($news);
+//            $em->flush();
+//            $news = null;
+//            
+//            return $this->redirectToRoute('ajax_homepage', array(
+//                'form' => $form->createView(),
+//                'all_news' => $all_news
+//            ));
+//        }
 
 //        if ($form->isSubmitted() && $form->isValid()) {
 //            $em->persist($news);
