@@ -5,58 +5,155 @@
         <div class="nav-wrapper">
             <a href="#" class="brand-logo">W.C.S</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li>Nouvelles news: {{ nb_news }}</li>
+                <li>Nouvelles news: <span id="cptr">{{ nb_news }}</span>&nbsp;&nbsp;</li>
             </ul>
         </div>
     </nav>
-    <h1>Liste des News</h1>
-    <div class="container">
-        <div class="row">
-            <div class="col m10 offset-m1">
-                <table class="centered">
-                    <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Content</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for news in all_news %}
+
+    <div style="float:right;width:60%">
+        <h3>Liste des News</h3>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col m10 offset-m1">
+                    <table class="centered">
+                        <thead>
                         <tr>
-                            <td>{{ news.title }}</td>
-                            <td>{{ news.content }}</td>
-                            <td>
-                                <ul>
-                                    <li>
-                                        <a href="{{ path('news_delete', { 'id': news.id }) }}">delete</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ path('news_edit', { 'id': news.id }) }}">edit</a>
-                                    </li>
-                                </ul>
-                            </td>
+                            <th>Title</th>
+                            <th>Content</th>
+                            <th>Actions</th>
                         </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {% for news in all_news %}
+                            {% include('AjaxBundle:news:show_news.html.twig') %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 
-
-
-    <h1>News creation</h1>
-    <div class="container">
-        <div class="row">
-            <div class="col m6 offset-m3">
-                {{ form_start(form) }}
-                {{ form_widget(form) }}
-                <input type="submit" value="Create" />
-                {{ form_end(form) }}
+    <div style="float:left;width:40%">
+        <h3 id="title">News creation</h3>
+        <div class="container-fluid">
+            <div class="row">
+                <div id="formulaire" class="col m10 offset-m1">
+                    {{ form_start(form) }}
+                        {{ form_widget(form) }}
+                    <input id="valid" type="submit" value="Create" />
+                    {{ form_end(form) }}
+                </div>
             </div>
         </div>
     </div>
 
 
 {% endblock %}
+
+{% block javascripts %}
+
+    <!-- Fonction 'parent()' appelée pour indiquer que l'on 'surcharge'
+     le javascript déclaré en page(s) parente(s) -->
+
+    {{ parent() }}
+
+    <!-- Afin de permettre le debugage en 'pas-à-pas' dans la console (F12),
+    (dé)placer le code Js/Ajax dans un fichier externe => ici : main.js -->
+
+    <script src="{{ asset('bundles/ajax/main.js') }}"></script>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{#
+    //  Version de Laetitia
+    <script>
+        // Déclaration variable type tableau 'ref'
+        //  On lui injecte tous les champs du formulaire avec attribut 'required'
+        var ref = $this.find("[required]");
+
+        // Boucle permettant de vérifier la saisie associée à chaque champ 'required'
+        $(ref).each(function () {
+            if ($(this).val() == '') {
+                // Si le contenu est vide => envoi du focus sur le champ concerné
+                $(this).focus();
+                // Variable 'hasError' positionnée sur true
+                hasError = true;
+                // Sortie de la boucle
+                return false;
+            }
+        });
+
+        //  Si pas d'erreur :
+        if (!hasError) {
+
+            // Sauvegarde du bouton
+            var $button = $this.find('input[type=submit]');
+
+            // Sauvegarde du label du bouton avant modification
+
+            var initialText = $button.html();
+            // Afin que l'utilisateur ne s'excite pas sur le bouton associé au formulaire
+            //  On désactive celui-ci !!!
+            //  Le label du bouton passe à 'Loading ...'
+            $button.html("Loading...").prop('disabled', true);
+
+
+            var data = new FormData(this);
+
+            $.ajax({
+                type: 'POST',
+                url: $this.attr('action'),
+                data: data,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    $this.find('input[type=text]').val('');
+                    $this.find('textarea').val('');
+
+                    $('tbody').prepend(data.template);
+
+                    //  Réactivation du bouton associé au formulaire
+                    //  En remettant le label initial
+                    $button.html(initialText).prop('disabled', false);
+
+                },
+                error: function (error) {
+
+                }
+            });
+
+        }
+
+        return false;
+
+    </script>#}

@@ -4,6 +4,7 @@ namespace AjaxBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 use AjaxBundle\Entity\News;
 use AjaxBundle\Form\NewsType;
@@ -28,16 +29,34 @@ class NewsController extends Controller
         $form = $this->createForm('AjaxBundle\Form\NewsType', $news);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($news);
-            $em->flush();
-            $news = null;
-            
-            return $this->redirectToRoute('ajax_homepage', array(
-                'form' => $form->createView(),
-                'all_news' => $all_news
-            ));
+        if ($request->isMethod('POST')){
+            if ($form->isValid()){
+                $news = $form->getData();
+                $em->persist($news);
+                $em->flush();
+
+                $template = 'AjaxBundle:news:show_news.html.twig';
+                $html_result = $this->renderView($template, array(
+                    'news' => $news));
+
+                return new JsonResponse(array(
+                    'success' => true,
+                    'template' => $html_result,
+                    'id' => $news->getId()
+                ));
+            }
         }
+
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $em->persist($news);
+//            $em->flush();
+//            $news = null;
+//
+//            return $this->redirectToRoute('ajax_homepage', array(
+//                'form' => $form->createView(),
+//                'all_news' => $all_news
+//            ));
+//        }
 
         return $this->render('AjaxBundle:news:index.html.twig', array(
             'nb_news' => $nb_news,
@@ -80,7 +99,7 @@ class NewsController extends Controller
      * Remove an existing record and a file.
      *
      */
-    public function deleteAction($id) {
+    public function deleteAction(Request $request, $id) {
 
         $em = $this->getDoctrine()->getManager();
         $news = $em->getRepository('AjaxBundle:News')->find($id);
@@ -89,6 +108,13 @@ class NewsController extends Controller
 
         $em->remove($news);
         $em->flush();
+
+        if ($request->isMethod('POST')) {
+            return new JsonResponse(array(
+                'success' => true,
+                'id' => $id
+            ));
+        }
 
         return $this->redirectToRoute('ajax_homepage', array(
             'news' => $news,

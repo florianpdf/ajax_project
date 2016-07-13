@@ -1,0 +1,14 @@
+<tr id="{{ news.id }}">
+    <td>{{ news.title }}</td>
+    <td>{{ news.content }}</td>
+    <td>
+        <ul>
+            <li>
+                <a class="del_id" href="{{ path('news_delete', { 'id': news.id }) }}">delete</a>
+            </li>
+            <li>
+                <a href="{{ path('news_edit', { 'id': news.id }) }}">edit</a>
+            </li>
+        </ul>
+    </td>
+</tr>
