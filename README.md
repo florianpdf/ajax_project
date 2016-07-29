@@ -1,7 +1,7 @@
 Project Ajax
 ==============
 ####Objectif:
-Mise en place d'une fonctionnalité AJAX
+Mise en place d'une fonctionnalité AJAX sur un formulaire
 
 ####Pré-requis: 
 composer ==> [Install Composer](https://getcomposer.org/doc/00-intro.md)
